@@ -2,6 +2,8 @@
 
 Classic Snake game written in JavaScript, HTML, and CSS.
 
+Deployed Game: https://connorxcx-snakegame.netlify.app/
+
 References:
 
 1. [**Beginner JavaScript Project – Snake Game Tutorial**](https://youtu.be/uyhzCBEGaBY?si=vYqBnph0_kC3A-qv)
