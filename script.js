@@ -15,6 +15,8 @@ let gameInterval;
 let gameSpeedDelay = 200;
 let gameStarted = false;
 
+document.addEventListener("keydown", handleKeyPress);
+
 // Draw game map, snake, and food.
 function draw() {
   board.innerHTML = "";
@@ -32,19 +34,6 @@ function drawSnake() {
   });
 }
 
-// Create a snake or food cube / div.
-function createGameElement(tag, className) {
-  const element = document.createElement(tag);
-  element.className = className;
-  return element;
-}
-
-// Set the position of the snake or food.
-function setPosition(element, position) {
-  element.style.gridColumn = position.x;
-  element.style.gridRow = position.y;
-}
-
 // Draw food.
 function drawFood() {
   if (gameStarted) {
@@ -59,6 +48,19 @@ function generateFood() {
   const x = Math.floor(Math.random() * gridSize) + 1;
   const y = Math.floor(Math.random() * gridSize) + 1;
   return { x, y };
+}
+
+// Set the position of the snake or food.
+function setPosition(element, position) {
+  element.style.gridColumn = position.x;
+  element.style.gridRow = position.y;
+}
+
+// Create a snake or food cube / div.
+function createGameElement(tag, className) {
+  const element = document.createElement(tag);
+  element.className = className;
+  return element;
 }
 
 // Moving the snake.
@@ -95,18 +97,6 @@ function move() {
   }
 }
 
-// Start game function.
-function startGame() {
-  gameStarted = true; // Keep track of a running game.
-  instructionText.style.display = "none";
-  logo.style.display = "none";
-  gameInterval = setInterval(() => {
-    move();
-    checkCollision();
-    draw();
-  }, gameSpeedDelay);
-}
-
 // Keypress event listener.
 function handleKeyPress(event) {
   if (
@@ -132,8 +122,7 @@ function handleKeyPress(event) {
   }
 }
 
-document.addEventListener("keydown", handleKeyPress);
-
+// Increase speed of snake.
 function increaseSpeed() {
   if (gameSpeedDelay > 150) {
     gameSpeedDelay -= 5;
@@ -146,6 +135,7 @@ function increaseSpeed() {
   }
 }
 
+// Check whether the snake has collided with game board outer boundaries or itself.
 function checkCollision() {
   const head = snake[0];
 
@@ -160,6 +150,35 @@ function checkCollision() {
   }
 }
 
+// Update current score function.
+function updateScore() {
+  const currentScore = snake.length - 1;
+  score.textContent = currentScore.toString().padStart(3, "0");
+}
+
+// Update highest score function.
+function updateHighScore() {
+  const currentScore = snake.length - 1;
+  if (currentScore > highScore) {
+    highScore = currentScore;
+    highScoreText.textContent = highScore.toString().padStart(3, "0");
+  }
+  highScoreText.style.display = "block";
+}
+
+// Start game function.
+function startGame() {
+  gameStarted = true; // Keep track of a running game.
+  instructionText.style.display = "none";
+  logo.style.display = "none";
+  gameInterval = setInterval(() => {
+    move();
+    checkCollision();
+    draw();
+  }, gameSpeedDelay);
+}
+
+// Reset game function.
 function resetGame() {
   updateHighScore();
   stopGame();
@@ -170,23 +189,10 @@ function resetGame() {
   updateScore();
 }
 
-function updateScore() {
-  const currentScore = snake.length - 1;
-  score.textContent = currentScore.toString().padStart(3, "0");
-}
-
+// Stop game function.
 function stopGame() {
   clearInterval(gameInterval);
   gameStarted = false;
   instructionText.style.display = "block";
   logo.style.display = "block";
-}
-
-function updateHighScore() {
-  const currentScore = snake.length - 1;
-  if (currentScore > highScore) {
-    highScore = currentScore;
-    highScoreText.textContent = highScore.toString().padStart(3, "0");
-  }
-  highScoreText.style.display = "block";
 }
