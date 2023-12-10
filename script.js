@@ -16,6 +16,8 @@ let gameSpeedDelay = 200;
 let gameStarted = false;
 
 document.addEventListener("keydown", handleKeyPress);
+loadHighScore();
+highScoreText.textContent = highScore.toString().padStart(3, "0");
 
 // Draw game map, snake, and food.
 function draw() {
@@ -162,6 +164,7 @@ function updateHighScore() {
   if (currentScore > highScore) {
     highScore = currentScore;
     highScoreText.textContent = highScore.toString().padStart(3, "0");
+    saveHighScore();
   }
   highScoreText.style.display = "block";
 }
@@ -181,9 +184,7 @@ function loadHighScore() {
   );
   highScore = snakeGameLocalStorage
     ? snakeGameLocalStorage.highScore
-    : highScore === 0
-    ? highScore
-    : 0;
+    : highScore;
 }
 
 // Start game function.
@@ -191,7 +192,6 @@ function startGame() {
   gameStarted = true; // Keep track of a running game.
   instructionText.style.display = "none";
   logo.style.display = "none";
-  loadHighScore();
   gameInterval = setInterval(() => {
     move();
     checkCollision();
@@ -202,7 +202,6 @@ function startGame() {
 // Reset game function.
 function resetGame() {
   updateHighScore();
-  saveHighScore();
   stopGame();
   snake = [{ x: 10, y: 10 }];
   food = generateFood();
