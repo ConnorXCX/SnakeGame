@@ -166,11 +166,28 @@ function updateHighScore() {
   highScoreText.style.display = "block";
 }
 
+// Saves high score to local storage.
+function saveHighScore() {
+  localStorage.setItem(
+    "snakeGameLocalStorage",
+    JSON.stringify({ highScore: highScore })
+  );
+}
+
+// Loads high score from local storage.
+function loadHighScore() {
+  const snakeGameLocalStorage = JSON.parse(
+    localStorage.getItem("snakeGameLocalStorage")
+  );
+  highScore = snakeGameLocalStorage ? snakeGameLocalStorage.highScore : 0;
+}
+
 // Start game function.
 function startGame() {
   gameStarted = true; // Keep track of a running game.
   instructionText.style.display = "none";
   logo.style.display = "none";
+  loadHighScore();
   gameInterval = setInterval(() => {
     move();
     checkCollision();
@@ -181,6 +198,7 @@ function startGame() {
 // Reset game function.
 function resetGame() {
   updateHighScore();
+  saveHighScore();
   stopGame();
   snake = [{ x: 10, y: 10 }];
   food = generateFood();
