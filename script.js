@@ -179,7 +179,11 @@ function loadHighScore() {
   const snakeGameLocalStorage = JSON.parse(
     localStorage.getItem("snakeGameLocalStorage")
   );
-  highScore = snakeGameLocalStorage ? snakeGameLocalStorage.highScore : 0;
+  highScore = snakeGameLocalStorage
+    ? snakeGameLocalStorage.highScore
+    : highScore === 0
+    ? highScore
+    : 0;
 }
 
 // Start game function.
