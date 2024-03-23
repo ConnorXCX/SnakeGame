@@ -2,7 +2,7 @@
 
 Classic Snake game written in JavaScript, HTML, and CSS.
 
-Deployed Game: https://connorxcx-snakegame.netlify.app/
+Deployed Game: [ConnorXCX.github.io/SnakeGame](https://connorxcx.github.io/SnakeGame/)
 
 References:
 
